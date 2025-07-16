@@ -1,0 +1,16 @@
+{
+    "name": "RC-Pi-3506",
+    "vendor": "Real-Thread",
+    "description": "RC-Pi-3506 Board Support Packages",
+    "license": "",
+    "repository": "https://github.com/RT-Thread-Studio/sdk-bsp-rk3506-realthread-ruichingpi.git",
+    "releases": [
+        {
+            "version": "1.0.1",
+            "date": "2025-07-16",
+            "description": "睿擎派是睿擎平台官方推荐的评估板",
+            "size": "240 MB",
+            "url": "https://github.com/RT-Thread-Studio/sdk-bsp-rk3506-realthread-ruichingpi/archive/1.0.1.zip"
+        } 
+    ]
+}
