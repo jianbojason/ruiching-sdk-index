@@ -1,60 +1,52 @@
 name: sdk-check
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
-  # Run every 1 hour
-  # schedule:
-  #   - cron:  '*/60 * * * *'
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
-  # This workflow contains a single job called "build"
   build:
-      # 指定操作系统类型
-      runs-on: ubuntu-22.04
-      steps:
-        - uses: actions/checkout@v3
-        - name: Set up Python
-          uses: actions/setup-python@v3
-          with:
-            python-version: 3.10.12
-        #初始化python环境
-        - name: Install Python Tools
-          shell: bash
-          run: |
-            echo ${{ github.repository }}
-            sudo apt-get update
-            sudo apt-get install python3-pip python3-setuptools python3-wheel -y
-            sudo python -m pip install --upgrade pip
-            pip install requests wheel jsonschema wget pyyaml pytest pytest-sugar pytest-html rt-thread-studio
-        #配置ssh及环境变量
-        - name: Config Github SSH
-          shell: bash
-          if: ${{ github.ref == 'refs/heads/master' }}  
-          env:
-            GITEE_PRIVATE_KEY: ${{ secrets.SSH_SECRET_GITEE }}
-          run: |
-            echo ${{ github.repository }}
-            mkdir -p ~/.ssh/
-            echo "$GITEE_PRIVATE_KEY" > ~/.ssh/id_rsa
-            chmod 600 ~/.ssh/id_rsa
-            ssh-keyscan -t rsa gitee.com >> ~/.ssh/known_hosts
-        
-        #如果是MERGE直接更新Github-SDKINDEX
-        - name: Update-Github-Sdk-Index
-          shell: bash
-          env:
-            GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
-          if: ${{ github.repository == 'RT-Thread-Studio/sdk-index' && github.ref == 'refs/heads/master' && github.event_name == 'push' }} 
-          run: |
-            echo ${{ github.repository }}
-            cd ${{ github.workspace }}/scripts
-            python merge_sdk.py
-        
-
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.10.12
+      
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests wheel jsonschema wget pyyaml pytest pytest-sugar pytest-html rt-thread-studio
+      
+      - name: Config Github SSH
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          mkdir -p ~/.ssh/
+          chmod 700 ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -t rsa 43.139.44.192 >> ~/.ssh/known_hosts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Check Script Existence
+        id: check_script
+        run: |
+          if [ -f "$GITHUB_WORKSPACE/scripts/merge_sdk.py" ]; then
+            echo "script_exists=true" >> $GITHUB_ENV
+          else
+            echo "script_exists=false" >> $GITHUB_ENV
+          fi
+      
+      - name: Update-Github-Sdk-Index
+        if: ${{ github.repository == 'jianbojason/ruiching-sdk-index' && github.ref == 'refs/heads/main' && github.event_name == 'push' && env.script_exists == 'true' }}
+        run: |
+          ls -l ${{ github.workspace }}/scripts/ 
+          cd ${{ github.workspace }}/scripts
+          python merge_sdk.py
