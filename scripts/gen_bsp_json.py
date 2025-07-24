@@ -28,18 +28,8 @@ class SdkIndex(object):
 
 
 
-def gen_bsp_sdk_json(bsp_path,workspace):
-    parser = bsp_parser.BspParser(bsp_path)
-    bsp_json_file = parser.generate_bsp_project_create_json_input(workspace)
-    bsp_chip_json_path = os.path.join(bsp_path, "bsp_chips.json")
-    try:
-        with open(bsp_chip_json_path, "w", encoding="UTF8") as f:
-            f.write(str(json.dumps(bsp_json_file, indent=4)))
-    except Exception as e:
-        logging.error("\nError message : {0}.".format(e))
-        exit(1)
 
 
 if __name__ == "__main__":
     # prg_gen should be @ "/RT-ThreadStudio/plugins/gener/"
-    gen_bsp_sdk_json()
+    pass

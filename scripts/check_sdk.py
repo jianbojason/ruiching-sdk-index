@@ -18,7 +18,7 @@ def execute_command(cmd_string, cwd=None, shell=True):
 
 logging.info(execute_command("apt-get update && apt-get -y upgrade"))
 logging.info(execute_command("python -m pip install --upgrade pip"))
-logging.info(execute_command("pip install requests wget pyyaml jsonschema pytest pytest-sugar pytest-html rt-thread-studio"))
+logging.info(execute_command("pip install requests pyyaml jsonschema pytest pytest-sugar pytest-html rt-thread-studio"))
 
 
 import os
@@ -29,10 +29,8 @@ import sys
 from jsonschema import RefResolver, Draft7Validator, FormatChecker
 import yaml
 from sdk_index_gen import generate_all_index,get_json_obj_from_file
-from common_util import clear_dir, do_merge_copy, rename_dir_file,execute_command,download_retry,file_merge_unzip
-from ci_config import INDEX_SERVER_URL,CSP_NANO_VERSION,CSP_RTT_VERSION
-from gen_csp_json import gen_sdk_para_json_file
-from gen_test_case import gen_sdk_test_case
+from common_util import execute_command
+from ci_config import INDEX_SERVER_URL
 from gen_bsp_json import gen_bsp_sdk_json
 def run_id():
     if 'RUN_ID' in os.environ:
@@ -63,10 +61,6 @@ def index_schema_check(index_content):
 
     index_all_schema = get_schema_json_obj("index_all_schema.json")
     rtt_source_releases_schema = get_schema_json_obj("rtt_source_releases_schema.json")
-    csp_schema = get_schema_json_obj("csp_schema.json")
-    csp_dvendor_schema = get_schema_json_obj("csp_dvendor_schema.json")
-    csp_dvendor_package_schema = get_schema_json_obj("csp_dvendor_package_schema.json")
-    csp_dvendor_package_releases_schema = get_schema_json_obj("csp_dvendor_package_releases_schema.json")
 
     schema_store = {
             index_all_schema['$id']: index_all_schema,

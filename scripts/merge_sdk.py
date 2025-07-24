@@ -4,7 +4,6 @@ import logging
 import os
 import sys
 from sdk_index_gen import generate_all_index
-from common_util import execute_command
 from ci_config import INDEX_SERVER_URL
 
 def submit_index(prIndex):
@@ -21,8 +20,10 @@ def submit_index(prIndex):
         logging.error(e)
         sys.exit(1)
 def main():
+    # 设置日志级别为INFO
     logging.getLogger().setLevel(logging.INFO)
     index=generate_all_index("../index.json")
+    print(index)
     if 'GITEE_TOKEN' in os.environ:
         submit_index(index)
     
