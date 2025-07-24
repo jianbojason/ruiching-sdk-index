@@ -1,6 +1,4 @@
-import os
 import json
-import logging
 from pathlib import Path
 
 class SdkIndex(object):
@@ -11,10 +9,7 @@ class SdkIndex(object):
     def __init__(self,
                  sdk_index_root_path):
         self.sdk_index_root_path = Path(sdk_index_root_path)
-        if os.name == "nt":
-            self.is_in_linux = False
-        else:
-            self.is_in_linux = True
+
 
 
     def get_url_from_index_file(self, index_file, package_version):
