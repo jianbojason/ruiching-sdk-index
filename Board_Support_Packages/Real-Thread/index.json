@@ -3,6 +3,7 @@
     "dvendor": "Real-Thread",
     "description": "Real-Thread Board Support Packages",
     "index": [
-        "RC-Pi-3506"
+        "RC-Pi-3506",
+        "RC-Pi-3568"
     ]
 }
