@@ -1,10 +1,7 @@
-name: sdk-check
+name: ruiching-sdk-index
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
