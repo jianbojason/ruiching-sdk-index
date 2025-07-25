@@ -10,7 +10,7 @@
             "date": "2025-07-16",
             "description": "睿擎派是睿擎平台官方推荐的评估板",
             "size": "240 MB",
-            "url": "ttps://github.com/jianbojason/sdk-bsp-rk3506-realthread-ruichingpi/archive/refs/tags/1.0.0.zip"
+            "url": "https://github.com/jianbojason/sdk-bsp-rk3506-realthread-ruichingpi/archive/refs/tags/1.0.0.zip"
         } 
     ]
 }
