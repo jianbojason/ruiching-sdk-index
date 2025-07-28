@@ -18,8 +18,6 @@ class PackagesSync:
     def gogs_create_organization(self, org):
         GOGS_URL   = os.environ["GOGS_URL"]
         GOGS_TOKEN = os.environ["GOGS_TOKEN"]
-        # GOGS_URL   = 'https://api.rt-thread.com/gogs'
-        # GOGS_TOKEN =  '56c5f9a539e7390913e74c959a033c4d1584116a'
 
         url = '%s/api/v1/admin/users/root/orgs?token=%s'
         url = url % (GOGS_URL, GOGS_TOKEN)
@@ -47,14 +45,13 @@ class PackagesSync:
     def gogs_get_or_create_organization(self, org):
         GOGS_URL   = os.environ["GOGS_URL"]
         GOGS_TOKEN = os.environ["GOGS_TOKEN"]
-        # GOGS_URL   = 'https://api.rt-thread.com/gogs'
-        # GOGS_TOKEN =  '56c5f9a539e7390913e74c959a033c4d1584116a'
 
         url = '%s/api/v1/orgs/%s?token=%s'
         url = url % (GOGS_URL, org, GOGS_TOKEN)
         # logging.error('gogs_get_or_create_organization url: '+url)
         request = urllib.request.Request(url)
-
+        
+        resp = '{"id":0}'  # 默认返回空组织JSON
         try:
             response = urllib.request.urlopen(request)
             resp = response.read().decode('utf-8')
@@ -76,10 +73,6 @@ class PackagesSync:
         GOGS_URL   = os.environ["GOGS_URL"]
         GOGS_TOKEN = os.environ["GOGS_TOKEN"]
         GITHUB_PROXY_URL = os.environ["GITHUB_PROXY_URL"]
-
-        # GOGS_URL   = 'https://api.rt-thread.com/gogs'
-        # GOGS_TOKEN =  '56c5f9a539e7390913e74c959a033c4d1584116a'
-        # GITHUB_PROXY_URL = 'https://github-proxy.rt-thread.io'
 
         url = '%s/api/v1/repos/migrate?token=%s'
         url = url % (GOGS_URL, GOGS_TOKEN)
@@ -109,8 +102,6 @@ class PackagesSync:
     def gogs_get_or_create_Repositories(self, org, repo, org_info):
         GOGS_URL   = os.environ["GOGS_URL"]
         GOGS_TOKEN = os.environ["GOGS_TOKEN"]
-        # GOGS_URL   = 'https://api.rt-thread.com/gogs'
-        # GOGS_TOKEN =  '56c5f9a539e7390913e74c959a033c4d1584116a'
         url = '%s/api/v1/orgs/%s/repos?token=%s'
         url = url % (GOGS_URL, org, GOGS_TOKEN)
         
@@ -163,7 +154,6 @@ class PackagesSync:
 
 def get_gogs_access_token():
     try:
-        # return "56c5f9a539e7390913e74c959a033c4d1584116a"
         return os.environ["GOGS_TOKEN"]
     except Exception as e:
         logging.error("Error message: {0}.".format(e))
@@ -190,10 +180,6 @@ def main():
         logging.info('Synchronization script start time : %s' %
               time.asctime(time.localtime(time.time())))
 
-        # get access token from server
-        token = get_gogs_access_token()
-        logging.debug("access token  : %s" % token)
-
         packages_updata = PackagesSync()
 
         packages_updata.fetch_packages_info_from_git(repo_url)
@@ -208,7 +194,6 @@ def main():
         sys.exit(0)
 
     except Exception as e:
-        # mail_send.send_email_2_revcer("zhangyuan@rt-thread.com", "[Notice ERROR] " + str(e))
         logging.error("Error message: {0}.".format(e))
         traceback.print_exc()
         sys.exit(1)
