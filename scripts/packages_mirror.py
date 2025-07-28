@@ -113,9 +113,10 @@ class PackagesSync:
         # GOGS_TOKEN =  '56c5f9a539e7390913e74c959a033c4d1584116a'
         url = '%s/api/v1/orgs/%s/repos?token=%s'
         url = url % (GOGS_URL, org, GOGS_TOKEN)
-        #print('url: '+url)
-        request = urllib.request.Request(url)
-
+        
+        # 初始化resp变量
+        resp = '[]'  # 默认空数组JSON字符串
+        
         try:
             response = urllib.request.urlopen(request)
             resp = response.read().decode('utf-8')
@@ -145,7 +146,7 @@ class PackagesSync:
         self.gogs_migrate_repositories(org, repo, org_info)
 
     def create_repo_in_gogs(self, org, repo_name):
-        logging.INFO('create_repo_in_gogs, org=[%s], repo_name=[%s]'%(org, repo_name))
+        #logging.INFO('create_repo_in_gogs, org=[%s], repo_name=[%s]'%(org, repo_name))
         org_info = self.gogs_get_or_create_organization(org)
         self.gogs_get_or_create_Repositories(org, repo_name, org_info)
 
