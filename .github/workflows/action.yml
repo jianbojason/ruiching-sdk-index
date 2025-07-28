@@ -54,8 +54,6 @@ jobs:
           GOGS_TOKEN: ${{ secrets.GOGS_TOKEN }}
           GITHUB_PROXY_URL: ${{ secrets._GITHUB_PROXY_URL }}
         run: |
-          ls -l ${{ github.workspace }}/scripts/
-        run: |
           ls -l ${{ github.workspace }}/scripts/ 
           cd ${{ github.workspace }}/scripts
           python packages_mirror.py
