@@ -49,6 +49,12 @@ jobs:
 
       - name: Update-Gogs-Packages-Mirror
         if: ${{ github.repository == 'jianbojason/ruiching-sdk-index' && github.ref == 'refs/heads/main' && github.event_name == 'push' && env.script_exists == 'true' }}
+        env:
+          GOGS_URL: ${{ secrets.GOGS_URL }}
+          GOGS_TOKEN: ${{ secrets.GOGS_TOKEN }}
+          GITHUB_PROXY_URL: ${{ secrets._GITHUB_PROXY_URL }}
+        run: |
+          ls -l ${{ github.workspace }}/scripts/
         run: |
           ls -l ${{ github.workspace }}/scripts/ 
           cd ${{ github.workspace }}/scripts

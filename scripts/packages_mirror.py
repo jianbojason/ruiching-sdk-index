@@ -75,7 +75,7 @@ class PackagesSync:
     def gogs_migrate_repositories(self, org, repo, org_info):
         GOGS_URL   = os.environ["GOGS_URL"]
         GOGS_TOKEN = os.environ["GOGS_TOKEN"]
-        GITHUB_PROXY_URL = os.environ["_GITHUB_PROXY_URL"]
+        GITHUB_PROXY_URL = os.environ["GITHUB_PROXY_URL"]
 
         # GOGS_URL   = 'https://api.rt-thread.com/gogs'
         # GOGS_TOKEN =  '56c5f9a539e7390913e74c959a033c4d1584116a'
