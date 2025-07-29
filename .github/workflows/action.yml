@@ -54,9 +54,6 @@ jobs:
           GOGS_TOKEN: ${{ secrets.GOGS_TOKEN }}
           GITHUB_PROXY_URL: ${{ secrets._GITHUB_PROXY_URL }}
         run: |
-          echo "env.GOGS_URL=${{ env.GOGS_URL }}"
-          echo "env.GOGS_TOKEN=${{ env.GOGS_TOKEN }}"
-          echo "env.GITHUB_PROXY_URL=${{ env.GITHUB_PROXY_URL }}"
           ls -l ${{ github.workspace }}/scripts/ 
           cd ${{ github.workspace }}/scripts
           python packages_mirror.py

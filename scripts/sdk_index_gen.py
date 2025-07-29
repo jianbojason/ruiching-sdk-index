@@ -39,4 +39,32 @@ def generate_all_index(index_entry_file):
         return index_entry
 
 
+def get_all_repositories(index_all_json):
+    """从JSON数据中提取所有repository字段的值
+
+    Args:
+        index_all_json: 包含SDK所有索引信息的JSON数据
+
+    Returns:
+        list: 包含所有repository URL的列表
+    """
+    repositories = []
+
+    def traverse(node):
+        if isinstance(node, dict):
+            if 'repository' in node:
+                repositories.append(node['repository'])
+            for value in node.values():
+                traverse(value)
+        elif isinstance(node, list):
+            for item in node:
+                traverse(item)
+
+    traverse(index_all_json)
+    return repositories
+
+if __name__ == '__main__':
+    index = generate_all_index("../index.json")
+    repo_urls = get_all_repositories(index)
+    print(repo_urls)
         

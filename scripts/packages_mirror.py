@@ -8,6 +8,7 @@ import logging
 import traceback
 import codecs
 import os
+from sdk_index_gen import generate_all_index, get_all_repositories
 # import mail_send
 
 sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
@@ -102,10 +103,10 @@ class PackagesSync:
     def gogs_get_or_create_Repositories(self, org, repo, org_info):
         GOGS_URL   = os.environ["GOGS_URL"]
         GOGS_TOKEN = os.environ["GOGS_TOKEN"]
+
         url = '%s/api/v1/orgs/%s/repos?token=%s'
         url = url % (GOGS_URL, org, GOGS_TOKEN)
         request = urllib.request.Request(url)
-        
         # 初始化resp变量
         resp = '[]'  # 默认空数组JSON字符串
         
@@ -170,22 +171,32 @@ def init_logger():
                         datefmt=date_format,
                         )
 
-repo_url = 'https://github.com/RT-Thread-Studio/sdk-bsp-rk3506-realthread-ruichingpi.git' 
+index_entry_file = "../index.json"
+index_entry = generate_all_index(index_entry_file)
+repositorys_url = get_all_repositories(index_entry)
 def main():
+    # 初始化日志
     init_logger()
 
     try:
+        # 记录开始同步ruiching bsp packages的信息
         logging.info("Begin to sync ruiching bsp packages")
 
+        # 记录程序开始运行的时间
         time_start = time.time()
         logging.info('Synchronization script start time : %s' %
               time.asctime(time.localtime(time.time())))
 
+        # 创建PackagesSync对象
         packages_updata = PackagesSync()
 
-        print(get_gogs_access_token())
-
-        packages_updata.fetch_packages_info_from_git(repo_url)
+        # 从git仓库中获取packages信息
+        if len(repositorys_url) == 0:
+            logging.error("Error message: no repo url found.")
+            sys.exit(1)
+        for item in repositorys_url:
+            logging.info('repository url-> %s', item)
+            packages_updata.fetch_packages_info_from_git(item)
 
         # 显示程序运行时间
         time_end = time.time()
