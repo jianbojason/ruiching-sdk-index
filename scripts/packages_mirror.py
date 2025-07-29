@@ -104,6 +104,7 @@ class PackagesSync:
         GOGS_TOKEN = os.environ["GOGS_TOKEN"]
         url = '%s/api/v1/orgs/%s/repos?token=%s'
         url = url % (GOGS_URL, org, GOGS_TOKEN)
+        request = urllib.request.Request(url)
         
         # 初始化resp变量
         resp = '[]'  # 默认空数组JSON字符串
