@@ -50,7 +50,7 @@ class PackagesSync:
         url = url % (GOGS_URL, org, GOGS_TOKEN)
         # logging.error('gogs_get_or_create_organization url: '+url)
         request = urllib.request.Request(url)
-        
+
         resp = '{"id":0}'  # 默认返回空组织JSON
         try:
             response = urllib.request.urlopen(request)
@@ -181,6 +181,8 @@ def main():
               time.asctime(time.localtime(time.time())))
 
         packages_updata = PackagesSync()
+
+        print(get_gogs_access_token())
 
         packages_updata.fetch_packages_info_from_git(repo_url)
 
